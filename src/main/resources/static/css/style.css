@@ -1,12 +1,35 @@
+body{
+    background-color: #1e2022;
+}
+.gameContainer{
+    display: flex;
+    flex-direction: row;
+    height: 90vh;
+}
 #GameCanvas {
-    background-color: #aaa6a4;
+    background-color: #52616b;
     width: 28vw;
     height: 92vh;
     display: block;
     margin: auto;
     border-radius: 1%;
-    border: 2px solid black;
+    border: 2px solid #e4d5b7;
 }
-body{
-    background-color: #837d7d;
+#ranking,#info{
+    background-color: #52616b;
+    width: 20vw;
+    height: 70vh;
+    border-radius: 1%;
+    border: 2px solid #e4d5b7;
+
+}
+#info{
+    margin: auto 15vw auto 1vw;
+}
+#ranking{
+    margin: auto 1vw auto 15vw;
+}
+h2{
+    text-align: center;
+    color: #e4d5b7;
 }
