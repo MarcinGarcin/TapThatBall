@@ -12,10 +12,12 @@ let ballX = canvas.width / 2 - ballSize / 2;
 let ballY = canvas.height / 2 - ballSize / 2;
 let ballVy = 0;
 let ballVx = 0;
+let rotation = 0;
 
 // Game settings
 const gravity = 0.2;
-const bounceFactor = 0.98;
+const rotationFactor = 0.03;
+const bounceFactor = 1;
 const fractionFactor = 0.98;
 const horizontalHitFactor = bounceFactor * gravity * 10;
 const verticalHitFactor = bounceFactor * gravity * 100;
@@ -44,15 +46,17 @@ canvas.addEventListener("mousedown", function (event) {
 
 
 function animate() {
-    if (!isPlaying) return;
-
     calculatePosition();
-    calculateTextPosition()
+    calculateTextPosition();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-
     ctx.fillText(score.toString(), scoreX, scoreY);
-    ctx.drawImage(img, ballX, ballY, ballSize, ballSize);
+
+    ctx.save();
+    ctx.translate(ballX + ballSize / 2, ballY + ballSize / 2);
+    ctx.rotate(rotation);
+    ctx.drawImage(img, -ballSize / 2, -ballSize / 2, ballSize, ballSize);
+    ctx.restore();
 
     requestAnimationFrame(animate);
 }
@@ -63,6 +67,7 @@ function calculatePosition() {
     ballVy *= fractionFactor;
     ballY += ballVy;
     ballX += ballVx;
+    rotation += ballVx * rotationFactor;
 
     if (ballY >= canvas.height - ballSize) {
         console.log("you lose")
