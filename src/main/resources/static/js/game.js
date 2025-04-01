@@ -6,6 +6,8 @@ canvas.height = parseInt(getComputedStyle(canvas).height);
 ctx.font = "Bold 150px Courier New";
 ctx.fillStyle = "#e4d5b7";
 
+const button = document.getElementById("TryAgain");
+
 // Ball properties
 const ballSize = canvas.height / 8;
 let ballX = canvas.width / 2 - ballSize / 2;
@@ -18,14 +20,16 @@ let rotation = 0;
 const FPS = 120;
 const FRAME_DELAY = 1000 / FPS;
 let lastFrameTime = 0;
-const gravity = 0.4;
+const gravity = 0.5;
 const rotationFactor = 0.03;
 const bounceFactor = 1;
 const fractionFactor = 0.98;
 const horizontalHitFactor = bounceFactor * gravity * 10;
 const verticalHitFactor = bounceFactor * gravity * 100;
 let isPlaying = false;
+let gameOver = false;
 let score = 0;
+let gameText = "";
 let scoreX = canvas.width / 2;
 let scoreY = canvas.height / 3;
 
@@ -34,17 +38,53 @@ img.src = "../assets/ball.png";
 
 img.onload = function () {
     calculateTextPosition()
-    ctx.fillText(score.toString(), scoreX, scoreY);
+    gameText = score.toString()
+    ctx.fillText(gameText, scoreX, scoreY);
     ctx.drawImage(img, ballX, ballY, ballSize, ballSize);
 };
 
+button.addEventListener("click", function() {
+    resetGame();
+});
+
+function resetGame() {
+    gameOver = false;
+
+    button.style.visibility = "hidden";
+
+
+    ballX = canvas.width / 2 - ballSize / 2;
+    ballY = canvas.height / 2 - ballSize / 2;
+
+
+    ballVx = 0;
+    ballVy = 0;
+    rotation = 0;
+
+
+    score = 0;
+
+
+    gameText = score.toString();
+    calculateTextPosition();
+
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillText(gameText, scoreX, scoreY);
+    ctx.drawImage(img, ballX, ballY, ballSize, ballSize);
+
+    isPlaying = false;
+}
+
 
 canvas.addEventListener("mousedown", function (event) {
-    if (!isPlaying) {
+    if (!isPlaying && !gameOver) {
         isPlaying = true;
         animate();
     }
-    checkIfBallWasClicked(event);
+    if (isPlaying && !gameOver) {
+        checkIfBallWasClicked(event);
+    }
 });
 
 
@@ -53,12 +93,13 @@ function animate(timestamp) {
 
     if (timestamp - lastFrameTime >= FRAME_DELAY) {
         lastFrameTime = timestamp;
+        gameText = score.toString();
 
         calculatePosition();
         calculateTextPosition();
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillText(score.toString(), scoreX, scoreY);
+        ctx.fillText(gameText, scoreX, scoreY);
 
 
         rotation += ballVx * 0.05;
@@ -81,8 +122,11 @@ function calculatePosition() {
     ballX += ballVx;
     rotation += ballVx * rotationFactor;
 
-    if (ballY >= canvas.height - ballSize) {
-        console.log("you lose")
+    if (ballY >= canvas.height - ballSize*0.5) {
+        isPlaying = false;
+        gameOver = true;
+        button.style.visibility = "visible";
+
     }
     if (ballY <= 0) {
         ballY = 0;
