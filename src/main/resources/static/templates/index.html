@@ -8,8 +8,23 @@
 </head>
 <body>
     <div class="gameContainer">
-        <div id = "ranking">
+        <div id = "rankingPanel">
             <h2>Rank</h2>
+            <div id = "rankingContent">
+                <table id="rankingTable">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Country</th>
+                        <th>Date</th>
+                        <th>Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
         </div>
         <canvas id="GameCanvas"></canvas>
         <div id = "info">
@@ -17,5 +32,6 @@
         </div>
     </div>
 <script src="../js/game.js"></script>
+    <script src="../js/ranking.js"></script>
 </body>
 </html>

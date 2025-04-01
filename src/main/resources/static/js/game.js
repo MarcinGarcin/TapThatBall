@@ -15,7 +15,10 @@ let ballVx = 0;
 let rotation = 0;
 
 // Game settings
-const gravity = 0.2;
+const FPS = 120;
+const FRAME_DELAY = 1000 / FPS;
+let lastFrameTime = 0;
+const gravity = 0.4;
 const rotationFactor = 0.03;
 const bounceFactor = 1;
 const fractionFactor = 0.98;
@@ -45,18 +48,27 @@ canvas.addEventListener("mousedown", function (event) {
 });
 
 
-function animate() {
-    calculatePosition();
-    calculateTextPosition();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+function animate(timestamp) {
+    if (!isPlaying) return;
 
-    ctx.fillText(score.toString(), scoreX, scoreY);
+    if (timestamp - lastFrameTime >= FRAME_DELAY) {
+        lastFrameTime = timestamp;
 
-    ctx.save();
-    ctx.translate(ballX + ballSize / 2, ballY + ballSize / 2);
-    ctx.rotate(rotation);
-    ctx.drawImage(img, -ballSize / 2, -ballSize / 2, ballSize, ballSize);
-    ctx.restore();
+        calculatePosition();
+        calculateTextPosition();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillText(score.toString(), scoreX, scoreY);
+
+
+        rotation += ballVx * 0.05;
+
+        ctx.save();
+        ctx.translate(ballX + ballSize / 2, ballY + ballSize / 2);
+        ctx.rotate(rotation);
+        ctx.drawImage(img, -ballSize / 2, -ballSize / 2, ballSize, ballSize);
+        ctx.restore();
+    }
 
     requestAnimationFrame(animate);
 }
@@ -106,7 +118,7 @@ function checkIfBallWasClicked(event) {
 }
 
 function calculateTextPosition(){
-    scoreTextWidth = ctx.measureText(score.toString()).width;
+    let scoreTextWidth = ctx.measureText(score.toString()).width;
     scoreX = canvas.width / 2 - scoreTextWidth / 2;
     scoreY = canvas.height / 3;
 }
