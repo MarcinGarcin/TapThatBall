@@ -7,16 +7,12 @@
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-
-<div id="usernameOverlay">
-    <div id="usernameForm">
-        <h2>Welcome to Tap That Ball!</h2>
-        <p>Please enter your name to start the game</p>
-        <input type="text" id="nameInput" placeholder="Your name" maxlength="20">
-        <button id="startGame">Start Game</button>
-    </div>
+<div id="usernameForm">
+    <h2>Welcome to Tap That Ball!</h2>
+    <p>Please enter your name to start the game</p>
+    <input type="text" id="nameInput" placeholder="Your name" maxlength="20">
+    <button id="startGame">Start Game</button>
 </div>
-
 <div class="gameContainer">
     <div id="rankingPanel">
         <h2>Rank</h2>
@@ -43,16 +39,18 @@
     <div id="info">
         <h2>Session</h2>
         <div id="user-details">
-            <p id="username">Username: JohnDoe</p>
-            <p id="attempsAmount">Attemps</p>
-            <p id="country">Country: USA</p>
-            <p id="highscore">Highscore: 1000</p>
+            <p id="username"></p>
+            <p id="country"></p>
+            <p id="attempsAmount"></p>
+            <p id="highscore"></p>
+            <p id="uniqueId"></p>
         </div>
     </div>
 </div>
 
-<script src="../js/location.js"></script>
-    <script src="../js/game.js"></script>
-    <script src="../js/ranking.js"></script>
+<script src="../js/game.js"></script>
+<script src="../js/ranking.js"></script>
+<script type="module" src="../js/profile.js"></script>
+<script type="module" src="../js/location.js"></script>
 </body>
 </html>
