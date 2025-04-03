@@ -6,7 +6,7 @@ public interface RecordService {
 
     public void save(Record record);
 
-    public List<Record> get100TopRecords();
+    public List<Record> findAll();
 
     public int getNextId();
 }

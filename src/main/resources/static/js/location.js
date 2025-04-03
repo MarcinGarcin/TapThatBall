@@ -3,13 +3,14 @@ const API_KEY = "141e9dfa23ed4e1894eb3ded7ca6089c";
 async function getCountryFromCoords(lat, lon) {
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lon}&key=${API_KEY}`;
 
+
     try {
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
         const data = await response.json();
-        console.log(data.results.country);
-        return data.results.country || "Unknown Country";
+
+        return data.results[0].components.country || "Narnia";
     } catch (error) {
         console.error("Error fetching location:", error);
         return "Location not found";

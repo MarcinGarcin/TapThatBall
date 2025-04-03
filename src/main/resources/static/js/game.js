@@ -1,3 +1,7 @@
+import {incrementAttempAndCheckHighScore} from "./profile.js";
+import {populateTable} from "./ranking.js";
+
+
 const canvas = document.getElementById("GameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -20,7 +24,7 @@ let rotation = 0;
 const FPS = 120;
 const FRAME_DELAY = 1000 / FPS;
 let lastFrameTime = 0;
-const gravity = 0.5;
+const gravity = 0.25;
 const rotationFactor = 0.03;
 const bounceFactor = 1;
 const fractionFactor = 0.98;
@@ -48,6 +52,8 @@ button.addEventListener("click", function() {
 });
 
 function resetGame() {
+    incrementAttempAndCheckHighScore(score)
+    populateTable()
     gameOver = false;
 
     button.style.visibility = "hidden";
@@ -90,13 +96,14 @@ canvas.addEventListener("mousedown", function (event) {
 
 function animate(timestamp) {
     if (!isPlaying) return;
+    calculatePosition();
+    calculateTextPosition();
 
     if (timestamp - lastFrameTime >= FRAME_DELAY) {
         lastFrameTime = timestamp;
         gameText = score.toString();
 
-        calculatePosition();
-        calculateTextPosition();
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillText(gameText, scoreX, scoreY);
