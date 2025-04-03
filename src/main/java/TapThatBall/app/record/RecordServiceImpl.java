@@ -2,8 +2,9 @@ package TapThatBall.app.record;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RecordServiceImpl implements RecordService {
@@ -17,16 +18,19 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public void save(Record record) {
-        recordRepository.findByuniqueId(record.getUniqueId())
-                .ifPresentOrElse(existingRecord -> {
-                    if (record.getScore() > existingRecord.getScore()) {
-                        existingRecord.setName(record.getName());
-                        existingRecord.setCountry(record.getCountry());
-                        existingRecord.setDate(record.getDate());
-                        existingRecord.setScore(record.getScore());
-                        recordRepository.save(existingRecord);
-                    }
-                }, () -> recordRepository.save(record));
+        Optional<Record> existingRecordOptional = recordRepository.findByuniqueId(record.getUniqueId());
+        if (existingRecordOptional.isPresent()) {
+            Record existingRecord = existingRecordOptional.get();
+            if (record.getScore() > existingRecord.getScore()) {
+                existingRecord.setName(record.getName());
+                existingRecord.setCountry(record.getCountry());
+                existingRecord.setDate(record.getDate());
+                existingRecord.setScore(record.getScore());
+                recordRepository.save(existingRecord);
+            }
+        } else {
+            recordRepository.save(record);
+        }
     }
 
     @Override
