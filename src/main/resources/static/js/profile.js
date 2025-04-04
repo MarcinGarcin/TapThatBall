@@ -40,7 +40,7 @@ export function incrementAttempAndCheckHighScore(score) {
     if (score > highScore) {
         highScore = score;
         highScoreElement.textContent = "high score: " + highScore;
-        sendHighScoreUpdate(); // Call the function to send updated high score
+        sendHighScoreUpdate();
     }
 }
 

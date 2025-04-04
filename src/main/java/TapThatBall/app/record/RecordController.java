@@ -1,12 +1,13 @@
 package TapThatBall.app.record;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 @CrossOrigin(origins = "http://localhost:63342")
 public class RecordController {
 
@@ -16,17 +17,17 @@ public class RecordController {
         this.recordService = recordService;
     }
 
-    @GetMapping("/GetId")
+    @GetMapping("/api/GetId")
     public String GetId() {
         return String.valueOf(recordService.getNextId());
     }
 
-    @PostMapping("/Save")
+    @PostMapping("/api/Save")
     @PutMapping
     public void save(@RequestBody Record record) {
         recordService.save(record);
     }
-    @GetMapping("/GetTop")
+    @GetMapping("/api/GetTop")
     public List<Record> GetTop() {
         List<Record> records = recordService.findAll();
         return records;

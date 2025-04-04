@@ -1,5 +1,4 @@
 import {incrementAttempAndCheckHighScore} from "./profile.js";
-import {populateTable} from "./ranking.js";
 
 
 const canvas = document.getElementById("GameCanvas");
@@ -52,8 +51,7 @@ button.addEventListener("click", function() {
 });
 
 function resetGame() {
-    incrementAttempAndCheckHighScore(score)
-    populateTable()
+
     gameOver = false;
 
     button.style.visibility = "hidden";
@@ -156,6 +154,8 @@ function checkIfBallWasClicked(event) {
 
     if (x > ballX && x < ballX + ballSize && y > ballY && y < ballY + ballSize) {
         score++;
+        incrementAttempAndCheckHighScore(score)
+
         if (x >= ballX + ballSize * (1/3)) {
             ballVy -= verticalHitFactor;
             ballVx -= horizontalHitFactor;

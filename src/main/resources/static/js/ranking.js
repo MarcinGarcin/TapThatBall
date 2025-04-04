@@ -1,23 +1,32 @@
-export async function populateTable() {
+let previousData = [];
+
+const document = document.getElementById("gameCanvas");
+async function populateTable() {
     const tableBody = document.querySelector("#rankingTable tbody");
-    let counter = 1
-    tableBody.innerHTML = '';
 
-    const data = await downloadRanking();
+    try {
+        const data = await downloadRanking();
+        if (JSON.stringify(data) !== JSON.stringify(previousData)) {
+            tableBody.innerHTML = '';
+            let counter = 1;
 
+            data.forEach(player => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${counter}</td>
+                    <td>${player.name}</td>
+                    <td>${player.country}</td>
+                    <td>${player.score}</td>
+                `;
+                tableBody.appendChild(row);
+                counter++;
+            });
 
-
-    data.forEach(player => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${counter}</td>
-            <td>${player.name}</td>
-            <td>${player.country}</td>
-            <td>${player.score}</td>
-        `;
-        tableBody.appendChild(row);
-        counter++;
-    });
+            previousData = data;
+        }
+    } catch (error) {
+        console.error("Failed to fetch ranking:", error);
+    }
 }
 
 async function downloadRanking() {
@@ -28,9 +37,8 @@ async function downloadRanking() {
         }
         return await response.json();
     } catch (error) {
-        console.error("Failed to fetch ranking:", error);
-        return [];
+        return previousData;
     }
 }
 
-document.addEventListener("DOMContentLoaded", populateTable);
+
