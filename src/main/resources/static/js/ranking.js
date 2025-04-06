@@ -1,32 +1,23 @@
-let previousData = [];
-
-const document = document.getElementById("gameCanvas");
-async function populateTable() {
+export async function populateTable() {
     const tableBody = document.querySelector("#rankingTable tbody");
+    let counter = 1
+    tableBody.innerHTML = '';
+    console.log("chuj")
 
-    try {
-        const data = await downloadRanking();
-        if (JSON.stringify(data) !== JSON.stringify(previousData)) {
-            tableBody.innerHTML = '';
-            let counter = 1;
+    const data = await downloadRanking();
 
-            data.forEach(player => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${counter}</td>
-                    <td>${player.name}</td>
-                    <td>${player.country}</td>
-                    <td>${player.score}</td>
-                `;
-                tableBody.appendChild(row);
-                counter++;
-            });
+    data.forEach(player => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${counter}</td>
+            <td>${player.name}</td>
+            <td>${player.country}</td>
 
-            previousData = data;
-        }
-    } catch (error) {
-        console.error("Failed to fetch ranking:", error);
-    }
+            <td>${player.score}</td>
+        `;
+        tableBody.appendChild(row);
+        counter++;
+    });
 }
 
 async function downloadRanking() {
@@ -37,8 +28,7 @@ async function downloadRanking() {
         }
         return await response.json();
     } catch (error) {
-        return previousData;
+        console.error("Failed to fetch ranking:", error);
+        return [];
     }
 }
-
-

@@ -1,6 +1,8 @@
 import {incrementAttempAndCheckHighScore} from "./profile.js";
 
 
+const clickSound = new Audio("../static/assets/kick1.wav");
+clickSound.load()
 const canvas = document.getElementById("GameCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -27,7 +29,7 @@ const gravity = 0.25;
 const rotationFactor = 0.03;
 const bounceFactor = 1;
 const fractionFactor = 0.98;
-const horizontalHitFactor = bounceFactor * gravity * 10;
+const horizontalHitFactor = bounceFactor * gravity * 50;
 const verticalHitFactor = bounceFactor * gravity * 100;
 let isPlaying = false;
 let gameOver = false;
@@ -37,9 +39,11 @@ let scoreX = canvas.width / 2;
 let scoreY = canvas.height / 3;
 
 const img = new Image();
-img.src = "../assets/ball.png";
+img.src = "../static/assets/ball.png";
 
 img.onload = function () {
+    populateTable()
+
     calculateTextPosition()
     gameText = score.toString()
     ctx.fillText(gameText, scoreX, scoreY);
@@ -52,9 +56,12 @@ button.addEventListener("click", function() {
 
 function resetGame() {
 
+
     gameOver = false;
 
     button.style.visibility = "hidden";
+    incrementAttempAndCheckHighScore(score)
+
 
 
     ballX = canvas.width / 2 - ballSize / 2;
@@ -78,6 +85,7 @@ function resetGame() {
     ctx.drawImage(img, ballX, ballY, ballSize, ballSize);
 
     isPlaying = false;
+    populateTable();
 }
 
 
@@ -131,19 +139,21 @@ function calculatePosition() {
         isPlaying = false;
         gameOver = true;
         button.style.visibility = "visible";
-
     }
     if (ballY <= 0) {
         ballY = 0;
         ballVy *= -bounceFactor;
+        clickSound.play()
     }
     if (ballX <= 0) {
         ballX = 0;
         ballVx *= -bounceFactor;
+        clickSound.play()
     }
     if (ballX >= canvas.width - ballSize) {
         ballX = canvas.width - ballSize;
         ballVx *= -bounceFactor;
+        clickSound.play()
     }
 }
 
@@ -153,20 +163,19 @@ function checkIfBallWasClicked(event) {
     const y = event.clientY - rect.top;
 
     if (x > ballX && x < ballX + ballSize && y > ballY && y < ballY + ballSize) {
+        clickSound.play()
         score++;
-        incrementAttempAndCheckHighScore(score)
+        const clickOffset = x - (ballX + ballSize / 2);
+        const side = clickOffset / (ballSize / 2);
 
-        if (x >= ballX + ballSize * (1/3)) {
-            ballVy -= verticalHitFactor;
-            ballVx -= horizontalHitFactor;
-        } else if (x <= ballX + ballSize * (2/3)) {
-            ballVy -= verticalHitFactor;
-            ballVx += horizontalHitFactor;
-        } else {
-            ballVy -= verticalHitFactor;
-        }
+
+        const clampedSide = Math.max(-1, Math.min(1, side));
+
+        ballVy -= verticalHitFactor;
+        ballVx -= horizontalHitFactor * clampedSide;
     }
 }
+
 
 function calculateTextPosition(){
     let scoreTextWidth = ctx.measureText(score.toString()).width;
