@@ -1,5 +1,6 @@
-import {incrementAttempAndCheckHighScore} from "./profile.js";
+import{incrementAttempAndCheckHighScore} from "./profile";
 
+console.log("loaded");
 
 const clickSound = new Audio("../static/assets/kick1.wav");
 clickSound.load()
@@ -42,7 +43,6 @@ const img = new Image();
 img.src = "../static/assets/ball.png";
 
 img.onload = function () {
-    populateTable()
 
     calculateTextPosition()
     gameText = score.toString()
@@ -85,7 +85,7 @@ function resetGame() {
     ctx.drawImage(img, ballX, ballY, ballSize, ballSize);
 
     isPlaying = false;
-    populateTable();
+
 }
 
 

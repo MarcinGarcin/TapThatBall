@@ -1,22 +1,18 @@
 export async function populateTable() {
     const tableBody = document.querySelector("#rankingTable tbody");
-    let counter = 1
     tableBody.innerHTML = '';
-    console.log("chuj")
 
     const data = await downloadRanking();
 
-    data.forEach(player => {
+    data.forEach((player, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${counter}</td>
-            <td>${player.name}</td>
-            <td>${player.country}</td>
-
-            <td>${player.score}</td>
-        `;
+        <td>${index + 1}</td>
+        <td>${player.name}</td>
+        <td>${player.country}</td>
+        <td>${player.score}</td>
+    `;
         tableBody.appendChild(row);
-        counter++;
     });
 }
 

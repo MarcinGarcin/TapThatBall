@@ -1,6 +1,5 @@
-import './game.js';
-import './ranking.js';
-import './profile.js';
-import './location.js';
-import './uniqueId.js';
-
+import './modules/game.js';
+import './modules/profile.js';
+import './modules/location.js';
+import './modules/uniqueId.js';
+import './modules/ranking'
