@@ -24,21 +24,22 @@ let ballVx = 0;
 let rotation = 0;
 
 // Game settings
+let bounceFactor = 0.9;
 const FPS = 120;
 const FRAME_DELAY = 1000 / FPS;
 let lastFrameTime = 0;
-const gravity = 0.25;
+const gravity = 0.22;
 const rotationFactor = 0.03;
-const bounceFactor = 1;
 const fractionFactor = 0.98;
-const horizontalHitFactor = bounceFactor * gravity * 50;
-const verticalHitFactor = bounceFactor * gravity * 100;
+const horizontalHitFactor = bounceFactor * gravity * 60;
+const verticalHitFactor = bounceFactor * gravity * 120;
 let isPlaying = false;
 let gameOver = false;
 let score = 0;
 let gameText = "";
 let scoreX = canvas.width / 2;
 let scoreY = canvas.height / 3;
+
 
 const img = new Image();
 img.src = "../../assets/ball.png";
@@ -57,7 +58,6 @@ button.addEventListener("click", function() {
 });
 
 function resetGame() {
-
 
     gameOver = false;
 
@@ -167,9 +167,9 @@ function checkIfBallWasClicked(event) {
     if (x > ballX && x < ballX + ballSize && y > ballY && y < ballY + ballSize) {
         clickSound.play()
         score++;
+        bounceFactor += 0.01;
         const clickOffset = x - (ballX + ballSize / 2);
         const side = clickOffset / (ballSize / 2);
-
 
         const clampedSide = Math.max(-1, Math.min(1, side));
 
