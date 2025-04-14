@@ -10,7 +10,7 @@ async function getCountryFromCoords(lat, lon) {
 
         const data = await response.json();
 
-        return data.results[0].components.country || "Narnia";
+        return data.results[0].components.country_code || "Narnia";
     } catch (error) {
         console.error("Error fetching location:", error);
         return "Location not found";

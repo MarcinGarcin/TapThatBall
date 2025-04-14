@@ -45,7 +45,9 @@ const img = new Image();
 img.src = "../../assets/ball.png";
 
 img.onload = function () {
-    populateTable();
+
+
+    setInterval(populateTable, 5000);
 
     calculateTextPosition()
     gameText = score.toString()
@@ -64,30 +66,21 @@ function resetGame() {
     button.style.visibility = "hidden";
     incrementAttempAndCheckHighScore(score)
 
-
-
     ballX = canvas.width / 2 - ballSize / 2;
     ballY = canvas.height / 2 - ballSize / 2;
-
 
     ballVx = 0;
     ballVy = 0;
     rotation = 0;
 
-
     score = 0;
-
 
     gameText = score.toString();
     calculateTextPosition();
-
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillText(gameText, scoreX, scoreY);
     ctx.drawImage(img, ballX, ballY, ballSize, ballSize);
-
     isPlaying = false;
-    populateTable();
 }
 
 
@@ -167,7 +160,6 @@ function checkIfBallWasClicked(event) {
     if (x > ballX && x < ballX + ballSize && y > ballY && y < ballY + ballSize) {
         clickSound.play()
         score++;
-        bounceFactor += 0.01;
         const clickOffset = x - (ballX + ballSize / 2);
         const side = clickOffset / (ballSize / 2);
 

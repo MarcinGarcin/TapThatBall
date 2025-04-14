@@ -5,11 +5,13 @@ export async function populateTable() {
     const data = await downloadRanking();
 
     data.forEach((player, index) => {
+        console.log(player);
         const row = document.createElement("tr");
         row.innerHTML = `
         <td>${index + 1}</td>
         <td>${player.name}</td>
-        <td>${player.country}</td>
+        <td><img src="https://flagcdn.com/24x18/${player.country.toLowerCase()}.png" alt="${player.country}" /></td>
+
         <td>${player.score}</td>
     `;
         tableBody.appendChild(row);
@@ -18,7 +20,7 @@ export async function populateTable() {
 
 async function downloadRanking() {
     try {
-        const response = await fetch("http://localhost:8080/api/GetTop");
+        const response = await fetch("/api/GetTop");
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }

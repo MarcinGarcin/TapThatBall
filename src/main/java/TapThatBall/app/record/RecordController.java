@@ -1,7 +1,5 @@
 package TapThatBall.app.record;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,10 +25,10 @@ public class RecordController {
     public void save(@RequestBody Record record) {
         recordService.save(record);
     }
+
     @GetMapping("/api/GetTop")
     public List<Record> GetTop() {
-        List<Record> records = recordService.findAll();
-        return records;
+        return recordService.findAll();
     }
 
 }

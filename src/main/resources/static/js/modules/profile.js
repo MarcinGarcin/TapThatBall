@@ -16,17 +16,16 @@ document.getElementById("startGame").addEventListener("click", function() {
 
     if (username) {
         document.getElementById("usernameForm").style.display = "none";
-        userElement.innerText = username.toUpperCase();
+        userElement.innerText = username;
     } else {
         alert("Please enter your name!");
     }
 
     getUserLocation()
         .then(country => {
-            if (countryElement) {
-                countryElement.textContent = country;
+            if(countryElement){
+                countryElement.innerHTML = `<img src="https://flagcdn.com/24x18/${country.toLowerCase()}.png"/> `+country.toUpperCase();
             }
-            console.log('Pobrano kraj:', country);
         });
 
     attempsElement.textContent = "Attemps: " + 0;
@@ -46,17 +45,18 @@ export function incrementAttempAndCheckHighScore(score) {
 
 function sendHighScoreUpdate() {
     const country = countryElement.textContent;
+    console.log(country);
     const date = new Date().toISOString().slice(0, 10);
 
     const dataToSend = {
         name: username,
-        country: country,
+        country: country.trim(),
         date: date,
         score: highScore,
         uniqueId: uniqueId
     };
 
-    fetch('http://localhost:8080/api/Save', {
+    fetch('/api/Save', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
