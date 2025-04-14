@@ -1,8 +1,9 @@
-import{incrementAttempAndCheckHighScore} from "./profile";
+import{incrementAttempAndCheckHighScore} from "./profile.js";
+import {populateTable} from "./ranking.js";
 
 console.log("loaded");
 
-const clickSound = new Audio("../static/assets/kick1.wav");
+const clickSound = new Audio("../../assets/kick1.wav");
 clickSound.load()
 const canvas = document.getElementById("GameCanvas");
 const ctx = canvas.getContext("2d");
@@ -40,9 +41,10 @@ let scoreX = canvas.width / 2;
 let scoreY = canvas.height / 3;
 
 const img = new Image();
-img.src = "../static/assets/ball.png";
+img.src = "../../assets/ball.png";
 
 img.onload = function () {
+    populateTable();
 
     calculateTextPosition()
     gameText = score.toString()
@@ -85,7 +87,7 @@ function resetGame() {
     ctx.drawImage(img, ballX, ballY, ballSize, ballSize);
 
     isPlaying = false;
-
+    populateTable();
 }
 
 

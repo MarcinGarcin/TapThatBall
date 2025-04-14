@@ -18,7 +18,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public void save(Record record) {
-        Optional<Record> existingRecordOptional = recordRepository.findByuniqueId(record.getUniqueId());
+        Optional<Record> existingRecordOptional = recordRepository.findByUniqueId(record.getUniqueId());
         if (existingRecordOptional.isPresent()) {
             Record existingRecord = existingRecordOptional.get();
             if (record.getScore() > existingRecord.getScore()) {
